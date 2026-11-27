@@ -28,6 +28,10 @@ let package = Package(
             url: "https://github.com/swift-lco/Terminal.git",
             branch: "master"
         ),
+        .package(
+            url: "https://github.com/swift-lco/Surface.git",
+            branch: "master"
+        ),
     ],
     targets: [
         .executableTarget(
@@ -44,6 +48,10 @@ let package = Package(
                 .product(
                     name: "Terminal",
                     package: "Terminal"
+                ),
+                .product(
+                    name: "Surface",
+                    package: "Surface"
                 ),
                 .product(
                     name: "TerminalStructuredContent",

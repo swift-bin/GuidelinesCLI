@@ -2,6 +2,7 @@ import Darwin
 import Dispatch
 import GuidelinesSearch
 import Terminal
+import Surface
 
 struct GuidelineLiveSearchConfiguration:
     Sendable,
@@ -95,7 +96,7 @@ struct GuidelineLiveSearch {
             )
 
         var navigator =
-            TerminalListNavigator(
+            SurfaceList.Navigator(
                 count: results.count,
                 selectedIndex:
                     initialSelectionIndex(
@@ -302,7 +303,7 @@ struct GuidelineLiveSearch {
                 }
 
             case .results:
-                switch key.navigationAction(
+                switch key.navigationDirection(
                     on: .vertical
                 ) {
                 case .previous:
@@ -421,7 +422,7 @@ struct GuidelineLiveSearch {
                 GuidelineSearchIndex.Entry
             ],
         navigator:
-            inout TerminalListNavigator
+            inout SurfaceList.Navigator
     ) {
         let previousID =
             currentID(
@@ -486,7 +487,7 @@ struct GuidelineLiveSearch {
     }
 
     private func shouldFlushPendingSearch(
-        for key: TerminalKey,
+        for key: SurfaceInput.Key,
         focus: Focus
     ) -> Bool {
         guard focus == .query else {
@@ -512,7 +513,7 @@ struct GuidelineLiveSearch {
                 GuidelineSearchIndex.Entry
             ],
         navigator:
-            TerminalListNavigator,
+            SurfaceList.Navigator,
         focus: Focus
     ) {
         let stream =
@@ -758,7 +759,7 @@ struct GuidelineLiveSearch {
                 GuidelineSearchIndex.Entry
             ],
         navigator:
-            TerminalListNavigator
+            SurfaceList.Navigator
     ) -> GuidelineSearchIndex.Entry? {
         guard
             let index =
@@ -779,7 +780,7 @@ struct GuidelineLiveSearch {
                 GuidelineSearchIndex.Entry
             ],
         navigator:
-            TerminalListNavigator
+            SurfaceList.Navigator
     ) -> String? {
         currentEntry(
             in: results,
@@ -835,7 +836,7 @@ struct GuidelineLiveSearch {
     private func readKey(
         _ reader: TerminalKeyReader,
         timeoutMilliseconds: Int32
-    ) -> TerminalKey? {
+    ) -> SurfaceInput.Key? {
         var descriptor =
             pollfd(
                 fd:
